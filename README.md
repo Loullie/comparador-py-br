@@ -1,5 +1,4 @@
 # Loullie Store
-index.html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
