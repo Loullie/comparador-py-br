@@ -9,13 +9,15 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Compara PY">
-    <title>Compara PY-BR PRO v4.0 - OCR Real + Histórico</title>
+    <title>Compara PY-BR PRO v5.0 - QR Code + Barcode</title>
     
     <link rel="icon" type="image/png" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231e40af'/%3E%3Ctext x='50' y='60' font-size='50' fill='white' text-anchor='middle' font-family='Arial'%3E🛒%3C/text%3E%3C/svg%3E">
     <link rel="manifest" id="manifest-placeholder">
     
-    <!-- Tesseract.js para OCR Real -->
+    <!-- Bibliotecas para OCR, QR Code e Código de Barras -->
     <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@ericblade/quagga2@1.8.4/dist/quagga.min.js'></script>
     
     <style>
         :root {
@@ -104,7 +106,7 @@
         }
         
         .header p {
-            font-size: clamp(12px, 2.5vw, 14px);
+            font-size: clamp(11px, 2.5vw, 13px);
             opacity: 0.9;
         }
         
@@ -140,6 +142,7 @@
             font-weight: 600;
             color: var(--text-light);
             transition: all 0.3s;
+            font-size: 13px;
         }
         
         .tab.active {
@@ -199,6 +202,88 @@
             font-size: 15px;
             font-weight: 600;
             color: var(--primary-color);
+        }
+        
+        .scan-section {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .scan-section h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .scan-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .scan-btn {
+            padding: 15px;
+            background: white;
+            border: 2px solid var(--primary-light);
+            border-radius: 12px;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .scan-btn:active {
+            transform: scale(0.95);
+            background: var(--primary-light);
+            color: white;
+        }
+        
+        .scan-btn .icon {
+            font-size: 32px;
+        }
+        
+        #scannerVideo {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        #scannerCanvas {
+            display: none;
+        }
+        
+        .scan-result {
+            background: #dcfce7;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+            text-align: left;
+        }
+        
+        .scan-result.active {
+            display: block;
+        }
+        
+        .scan-result h5 {
+            color: #166534;
+            margin-bottom: 8px;
+        }
+        
+        .scan-result p {
+            color: #166534;
+            font-size: 13px;
+            line-height: 1.6;
         }
         
         .upload-section {
@@ -429,7 +514,7 @@
             padding: 20px;
             border-radius: 15px;
             text-align: center;
-            margin-top: 15px;
+            margin-bottom: 15px;
             font-weight: 700;
         }
         
@@ -523,15 +608,27 @@
             color: var(--primary-color);
             margin-top: 8px;
         }
+        
+        .stop-scan-btn {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <span class="version-badge">v4.0 PRO</span>
+            <span class="version-badge">v5.0 FINAL</span>
             <span class="emoji">🛒</span>
             <h1>Compara PY-BR PRO</h1>
-            <p>OCR Real • Histórico • Melhor Moeda • RTU</p>
+            <p>OCR • QR Code • Código de Barras • RTU</p>
         </div>
         
         <div class="content left-column">
@@ -557,6 +654,27 @@
                         <label>1 US$ =</label>
                         <input type="number" id="rateGuaraniUSD" value="8357" step="1" min="0">
                         <span style="font-weight: 600;">₲</span>
+                    </div>
+                </div>
+                
+                <div class="scan-section">
+                    <h4>📱 Escanear QR Code / Código de Barras</h4>
+                    <div class="scan-buttons">
+                        <button class="scan-btn" onclick="startQRScan()">
+                            <span class="icon">📷</span>
+                            <span>QR Code</span>
+                        </button>
+                        <button class="scan-btn" onclick="startBarcodeScan()">
+                            <span class="icon">📊</span>
+                            <span>Cód. Barras</span>
+                        </button>
+                    </div>
+                    <video id="scannerVideo" autoplay playsinline></video>
+                    <canvas id="scannerCanvas"></canvas>
+                    <button class="stop-scan-btn" id="stopScanBtn" onclick="stopScan()">⏹️ Parar Scan</button>
+                    <div class="scan-result" id="scanResult">
+                        <h5 id="scanResultTitle">✅ Código Detectado!</h5>
+                        <p id="scanResultText"></p>
                     </div>
                 </div>
                 
@@ -617,7 +735,8 @@
                         <select id="specialRegime">
                             <option value="none">Normal (60%)</option>
                             <option value="remessaconforme">Remessa Conforme (17%)</option>
-                            <option value="rtu">RTU - Remessa Expressa (60%)</option>
+                            <option value="rtu_online">RTU Online (60%)</option>
+                            <option value="rtu_presencial">RTU Presencial (60%)</option>
                             <option value="isencao">Isenção (0%)</option>
                             <option value="courier">Courier</option>
                             <option value="drawback">Drawback (PJ)</option>
@@ -642,7 +761,7 @@
             <div id="historyTab" class="tab-content">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <h3 style="color: var(--primary-color);">Consultas Salvas</h3>
-                    <button onclick="clearHistory()" style="background: var(--danger-color); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 13px;">🗑️ Limpar Tudo</button>
+                    <button onclick="clearHistory()" style="background: var(--danger-color); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 13px;">🗑️ Limpar</button>
                 </div>
                 <div id="historyList"></div>
             </div>
@@ -691,7 +810,7 @@
 
     <script>
         const manifestData = {
-            name: "Compara PY-BR PRO v4.0",
+            name: "Compara PY-BR PRO v5.0",
             short_name: "ComparaPY",
             start_url: window.location.href,
             display: "standalone",
@@ -707,7 +826,6 @@
         const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
         document.getElementById('manifest-placeholder').href = URL.createObjectURL(manifestBlob);
 
-        // Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 const sw = `self.addEventListener('install',e=>e.waitUntil(self.skipWaiting()));self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));`;
@@ -728,6 +846,15 @@
         const currencySelect = document.getElementById('currency');
         const specialRegimeSelect = document.getElementById('specialRegime');
         const regimeInfo = document.getElementById('regimeInfo');
+        const scannerVideo = document.getElementById('scannerVideo');
+        const scannerCanvas = document.getElementById('scannerCanvas');
+        const scanResult = document.getElementById('scanResult');
+        const scanResultText = document.getElementById('scanResultText');
+        const stopScanBtn = document.getElementById('stopScanBtn');
+        
+        let scanStream = null;
+        let scanMode = null;
+        let qrScanInterval = null;
         
         // Funções de Tab
         function switchTab(tab) {
@@ -742,6 +869,160 @@
                 document.getElementById('historyTab').classList.add('active');
                 loadHistory();
             }
+        }
+        
+        // Scanner QR Code
+        async function startQRScan() {
+            try {
+                scanMode = 'qr';
+                scanResult.classList.remove('active');
+                
+                scanStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'environment' } 
+                });
+                
+                scannerVideo.srcObject = scanStream;
+                scannerVideo.style.display = 'block';
+                stopScanBtn.style.display = 'block';
+                
+                scannerCanvas.width = 640;
+                scannerCanvas.height = 480;
+                const ctx = scannerCanvas.getContext('2d');
+                
+                qrScanInterval = setInterval(() => {
+                    if (scannerVideo.readyState === scannerVideo.HAVE_ENOUGH_DATA) {
+                        ctx.drawImage(scannerVideo, 0, 0, scannerCanvas.width, scannerCanvas.height);
+                        const imageData = ctx.getImageData(0, 0, scannerCanvas.width, scannerCanvas.height);
+                        const code = jsQR(imageData.data, imageData.width, imageData.height);
+                        
+                        if (code) {
+                            handleScanResult('QR Code', code.data);
+                            stopScan();
+                        }
+                    }
+                }, 100);
+                
+            } catch (error) {
+                alert('❌ Erro ao acessar câmera: ' + error.message);
+            }
+        }
+        
+        // Scanner Código de Barras
+        async function startBarcodeScan() {
+            try {
+                scanMode = 'barcode';
+                scanResult.classList.remove('active');
+                
+                scannerVideo.style.display = 'block';
+                stopScanBtn.style.display = 'block';
+                
+                Quagga.init({
+                    inputStream: {
+                        name: "Live",
+                        type: "LiveStream",
+                        target: scannerVideo,
+                        constraints: {
+                            facingMode: "environment"
+                        }
+                    },
+                    decoder: {
+                        readers: [
+                            "code_128_reader",
+                            "ean_reader",
+                            "ean_8_reader",
+                            "code_39_reader",
+                            "upc_reader",
+                            "upc_e_reader"
+                        ]
+                    }
+                }, function(err) {
+                    if (err) {
+                        alert('❌ Erro ao iniciar scanner: ' + err);
+                        return;
+                    }
+                    Quagga.start();
+                });
+                
+                Quagga.onDetected(function(result) {
+                    const code = result.codeResult.code;
+                    handleScanResult('Código de Barras', code);
+                    stopScan();
+                });
+                
+            } catch (error) {
+                alert('❌ Erro ao acessar câmera: ' + error.message);
+            }
+        }
+        
+        function stopScan() {
+            if (qrScanInterval) {
+                clearInterval(qrScanInterval);
+                qrScanInterval = null;
+            }
+            
+            if (scanStream) {
+                scanStream.getTracks().forEach(track => track.stop());
+                scanStream = null;
+            }
+            
+            if (scanMode === 'barcode') {
+                Quagga.stop();
+            }
+            
+            scannerVideo.style.display = 'none';
+            stopScanBtn.style.display = 'none';
+            scanMode = null;
+        }
+        
+        async function handleScanResult(type, code) {
+            scanResult.classList.add('active');
+            scanResultText.innerHTML = `<strong>${type}:</strong> ${code}<br><br>🔍 Buscando informações do produto...`;
+            
+            // Simular busca de produto (em produção, usar API real)
+            setTimeout(async () => {
+                const productInfo = await searchProductByCode(code);
+                
+                if (productInfo) {
+                    productNameInput.value = productInfo.name;
+                    productPriceInput.value = productInfo.price;
+                    currencySelect.value = productInfo.currency;
+                    updatePriceLabel();
+                    
+                    productNameInput.classList.add('auto-filled');
+                    productPriceInput.classList.add('auto-filled');
+                    
+                    scanResultText.innerHTML = `
+                        <strong>${type}:</strong> ${code}<br>
+                        ✅ <strong>Produto encontrado!</strong><br>
+                        📦 ${productInfo.name}<br>
+                        💵 ${productInfo.currency === 'guarani' ? '₲' : productInfo.currency === 'dolar' ? 'US$' : 'R$'} ${productInfo.price}
+                    `;
+                    
+                    setTimeout(() => {
+                        productNameInput.classList.remove('auto-filled');
+                        productPriceInput.classList.remove('auto-filled');
+                    }, 2000);
+                } else {
+                    scanResultText.innerHTML = `
+                        <strong>${type}:</strong> ${code}<br>
+                        ⚠️ Produto não encontrado na base de dados.<br>
+                        💡 Digite manualmente o nome e preço.
+                    `;
+                }
+            }, 1500);
+        }
+        
+        // Simular busca de produto (substituir por API real)
+        async function searchProductByCode(code) {
+            await new Promise(r => setTimeout(r, 1000));
+            
+            const mockProducts = {
+                '7891234567890': { name: 'Notebook Dell Inspiron 15', price: '2499.00', currency: 'real' },
+                '7899876543210': { name: 'Samsung Galaxy S24', price: '750000', currency: 'guarani' },
+                '0123456789012': { name: 'iPhone 15 Pro', price: '899.00', currency: 'dolar' },
+            };
+            
+            return mockProducts[code] || null;
         }
         
         // Upload de imagem
@@ -796,7 +1077,6 @@
                 const { data: { text } } = await Tesseract.recognize(imageData);
                 await worker.terminate();
                 
-                // Processar texto extraído
                 const extractedData = extractProductInfo(text);
                 
                 if (extractedData.productName || extractedData.price) {
@@ -821,15 +1101,13 @@
                         }
                     }
                     
-                    ocrText.innerHTML += '<br><small>Texto completo: ' + text.substring(0, 100) + '...</small>';
-                    
                     setTimeout(() => {
                         productNameInput.classList.remove('auto-filled');
                         productPriceInput.classList.remove('auto-filled');
                     }, 2000);
                 } else {
                     ocrStatus.className = 'ocr-status error';
-                    ocrText.innerHTML = `⚠️ Não consegui extrair dados claramente.<br><small>Texto detectado: ${text.substring(0, 150)}...</small><br><br>💡 Dica: Tire foto mais nítida da etiqueta de preço`;
+                    ocrText.innerHTML = `⚠️ Não consegui extrair dados claramente.<br><small>Texto: ${text.substring(0, 100)}...</small>`;
                 }
                 
             } catch (error) {
@@ -840,23 +1118,20 @@
             }
         }
         
-        // Extrair informações do texto OCR
         function extractProductInfo(text) {
             let productName = '';
             let price = '';
             let currency = 'guarani';
             
-            // Limpar texto
             const cleanText = text.replace(/\n/g, ' ').trim();
             
-            // Detectar preço com diferentes formatos
             const pricePatterns = [
-                /(?:R\$|RS)\s*(\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?)/i,  // R$ 1.234,56
-                /(?:US\$|USD)\s*(\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?)/i, // US$ 123.45
-                /₲\s*(\d{1,3}(?:[.,]\d{3})*)/i,                          // ₲ 123.456
-                /Gs\s*(\d{1,3}(?:[.,]\d{3})*)/i,                         // Gs 123.456
-                /(\d{1,3}(?:[.,]\d{3}){2,})/,                            // 123.456.789 (guarani)
-                /(\d{1,3}[.,]\d{2})/                                     // 123.45 (dólar/real)
+                /(?:R\$|RS)\s*(\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?)/i,
+                /(?:US\$|USD)\s*(\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?)/i,
+                /₲\s*(\d{1,3}(?:[.,]\d{3})*)/i,
+                /Gs\s*(\d{1,3}(?:[.,]\d{3})*)/i,
+                /(\d{1,3}(?:[.,]\d{3}){2,})/,
+                /(\d{1,3}[.,]\d{2})/
             ];
             
             for (let pattern of pricePatterns) {
@@ -864,30 +1139,21 @@
                 if (match) {
                     price = match[1].replace(/[.,]/g, '');
                     
-                    // Detectar moeda
                     if (cleanText.match(/R\$|RS|Real/i)) {
                         currency = 'real';
-                        // Ajustar para formato decimal
-                        if (price.length > 2) {
-                            price = price.slice(0, -2) + '.' + price.slice(-2);
-                        }
+                        if (price.length > 2) price = price.slice(0, -2) + '.' + price.slice(-2);
                     } else if (cleanText.match(/US\$|USD|Dólar|Dollar/i)) {
                         currency = 'dolar';
-                        if (price.length > 2) {
-                            price = price.slice(0, -2) + '.' + price.slice(-2);
-                        }
+                        if (price.length > 2) price = price.slice(0, -2) + '.' + price.slice(-2);
                     } else if (cleanText.match(/₲|Gs|Guarani/i) || price.length >= 5) {
                         currency = 'guarani';
                     }
-                    
                     break;
                 }
             }
             
-            // Extrair nome do produto (primeira linha significativa ou texto antes do preço)
             const lines = text.split('\n').filter(l => l.trim().length > 3);
             if (lines.length > 0) {
-                // Pegar primeira linha com mais de 5 caracteres que não seja só números
                 for (let line of lines) {
                     if (line.length > 5 && !/^\d+$/.test(line.trim())) {
                         productName = line.trim().substring(0, 100);
@@ -899,7 +1165,6 @@
             return { productName, price, currency };
         }
         
-        // Atualizar label
         function updatePriceLabel() {
             const labels = {
                 'guarani': '💵 Preço (₲):',
@@ -911,13 +1176,13 @@
         
         currencySelect.addEventListener('change', updatePriceLabel);
         
-        // Info de regime
         specialRegimeSelect.addEventListener('change', () => {
             const regime = specialRegimeSelect.value;
             const infos = {
                 'none': 'Regime normal: 60% de Imposto de Importação.',
-                'remessaconforme': 'Remessa Conforme: 17% para compras online até US$ 3.000 em sites cadastrados.',
-                'rtu': 'RTU (Regime de Tributação Unificada): 60% de imposto para remessas expressas internacionais. Processo simplificado para encomendas aéreas e expressas.',
+                'remessaconforme': 'Remessa Conforme: 17% para compras online até US$ 3.000.',
+                'rtu_online': 'RTU Online: 60% para remessas expressas internacionais via courier/encomendas aéreas.',
+                'rtu_presencial': 'RTU Presencial: 60% de imposto aplicado em compras presenciais no Paraguai ao cruzar a fronteira. Regime de Tributação Unificada para bagagem acompanhada.',
                 'isencao': 'Isenção: Até US$ 1.000 via terrestre para pessoa física.',
                 'courier': 'Courier: 60% II + ICMS. Processo rápido.',
                 'drawback': 'Drawback (PJ): Suspensão de impostos para exportadores.',
@@ -929,7 +1194,6 @@
             regimeInfo.style.display = regime === 'none' ? 'none' : 'block';
         });
         
-        // Taxas
         function getExchangeRates() {
             return {
                 USD_TO_BRL: parseFloat(document.getElementById('rateBRL').value) || 5.85,
@@ -944,7 +1208,6 @@
                    currency === 'dolar' ? price * rates.USD_TO_BRL : price;
         }
         
-        // Calcular impostos
         function calculateTaxes(priceBRL, priceUSD, personType, regime) {
             let taxRate = 0.60;
             let taxAmount = priceBRL * taxRate;
@@ -954,10 +1217,10 @@
                 taxRate = 0.17;
                 taxAmount = priceBRL * taxRate;
                 taxDescription = 'Remessa Conforme (17%)';
-            } else if (regime === 'rtu') {
+            } else if (regime === 'rtu_online' || regime === 'rtu_presencial') {
                 taxRate = 0.60;
                 taxAmount = priceBRL * taxRate;
-                taxDescription = 'RTU (60%)';
+                taxDescription = regime === 'rtu_online' ? 'RTU Online (60%)' : 'RTU Presencial (60%)';
             } else if (regime === 'isencao' && priceUSD <= 1000) {
                 taxAmount = 0;
                 taxDescription = 'Isento';
@@ -978,36 +1241,21 @@
             return { taxAmount, taxDescription };
         }
         
-        // Calcular melhor moeda
         function calculateBestCurrency(price, currency) {
             const rates = getExchangeRates();
-            
-            let results = {
-                guarani: { value: 0, text: '' },
-                dolar: { value: 0, text: '' },
-                real: { value: 0, text: '' }
-            };
-            
-            // Converter preço original para BRL
             const priceBRL = convertToBRL(price, currency);
             const priceUSD = priceBRL / rates.USD_TO_BRL;
             const priceGuarani = priceUSD * rates.USD_TO_GUARANI;
             
-            // Simular compra em cada moeda
-            results.guarani.value = priceGuarani;
-            results.guarani.text = `₲ ${priceGuarani.toLocaleString('pt-BR', {maximumFractionDigits: 0})}`;
+            let results = {
+                guarani: { value: priceGuarani, text: `₲ ${priceGuarani.toLocaleString('pt-BR', {maximumFractionDigits: 0})}` },
+                dolar: { value: priceUSD, text: `US$ ${priceUSD.toFixed(2)}` },
+                real: { value: priceBRL, text: `R$ ${priceBRL.toFixed(2)}` }
+            };
             
-            results.dolar.value = priceUSD;
-            results.dolar.text = `US$ ${priceUSD.toFixed(2)}`;
-            
-            results.real.value = priceBRL;
-            results.real.text = `R$ ${priceBRL.toFixed(2)}`;
-            
-            // Determinar melhor moeda (menor valor em BRL)
             let best = 'real';
             let bestValueBRL = priceBRL;
             
-            // Comparar considerando as taxas
             const guaraniInBRL = priceGuarani * rates.GUARANI_TO_BRL;
             const dolarInBRL = priceUSD * rates.USD_TO_BRL;
             
@@ -1023,7 +1271,6 @@
             return { results, best };
         }
         
-        // Buscar preço Brasil
         async function searchBrazilPrice(productName, priceBRL) {
             await new Promise(r => setTimeout(r, 800));
             const multipliers = {
@@ -1041,7 +1288,6 @@
             return priceBRL * mult;
         }
         
-        // Comparação
         document.getElementById('compareBtn').addEventListener('click', async () => {
             const price = parseFloat(productPriceInput.value);
             const currency = currencySelect.value;
@@ -1069,7 +1315,6 @@
                 const savings = priceBrazil - totalParaguai;
                 const savingsPercent = ((savings / priceBrazil) * 100).toFixed(1);
                 
-                // Melhor moeda
                 const { results: currencyResults, best } = calculateBestCurrency(price, currency);
                 const bestCurrencyNames = {
                     'guarani': 'Guarani (₲)',
@@ -1080,13 +1325,12 @@
                 document.getElementById('bestCurrencyText').innerHTML = `
                     💎 MELHOR MOEDA: <strong>${bestCurrencyNames[best]}</strong><br>
                     <small style="font-size: 14px; opacity: 0.9;">
-                        ₲ ${currencyResults.guarani.text} • 
+                        ${currencyResults.guarani.text} • 
                         ${currencyResults.dolar.text} • 
                         ${currencyResults.real.text}
                     </small>
                 `;
                 
-                // Resultados
                 const symbols = { 'guarani': '₲', 'dolar': 'US$', 'real': 'R$' };
                 document.getElementById('priceOriginal').textContent = `${symbols[currency]} ${price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
                 document.getElementById('priceBRL').textContent = `R$ ${priceBRL.toFixed(2)}`;
@@ -1107,7 +1351,6 @@
                 
                 document.getElementById('results').style.display = 'block';
                 
-                // Salvar no histórico
                 saveToHistory({
                     productName, price, currency, personType, regime,
                     totalParaguai, priceBrazil, savings, savingsPercent,
@@ -1122,7 +1365,6 @@
             }
         });
         
-        // Histórico
         function saveToHistory(data) {
             let history = JSON.parse(localStorage.getItem('comparapy_history') || '[]');
             history.unshift(data);
@@ -1144,10 +1386,9 @@
                     <button class="delete-btn" onclick="deleteHistoryItem(${index})">🗑️</button>
                     <h4>${item.productName}</h4>
                     <div class="history-item-info">
-                        💵 Preço: ${item.price.toLocaleString('pt-BR')} (${item.currency})<br>
-                        👤 ${item.personType === 'fisica' ? 'PF' : 'PJ'} • 
-                        🎯 ${item.regime}<br>
-                        💎 Melhor moeda: ${item.bestCurrency}<br>
+                        💵 ${item.price.toLocaleString('pt-BR')} (${item.currency})<br>
+                        👤 ${item.personType === 'fisica' ? 'PF' : 'PJ'} • 🎯 ${item.regime}<br>
+                        💎 Melhor: ${item.bestCurrency}<br>
                         📅 ${new Date(item.timestamp).toLocaleString('pt-BR')}
                     </div>
                     <div class="history-item-result ${item.savings > 0 ? 'positive' : 'negative'}">
@@ -1166,7 +1407,7 @@
         }
         
         function clearHistory() {
-            if (confirm('Tem certeza que deseja limpar todo o histórico?')) {
+            if (confirm('Limpar todo o histórico?')) {
                 localStorage.removeItem('comparapy_history');
                 loadHistory();
             }
