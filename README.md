@@ -620,12 +620,662 @@
             margin-top: 15px;
             display: none;
         }
+        
+        /* Seção de Publicidade */
+        .advertising-section {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 2px solid var(--border-color);
+        }
+        
+        .ad-label {
+            font-size: 11px;
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .ad-banner {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ad-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .ad-banner:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .ad-banner:active {
+            transform: scale(0.98);
+        }
+        
+        .ad-banner-secondary {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        }
+        
+        .ad-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .ad-icon {
+            font-size: 42px;
+            flex-shrink: 0;
+        }
+        
+        .ad-text {
+            flex: 1;
+        }
+        
+        .ad-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+        
+        .ad-subtitle {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        
+        .ad-manage-btn {
+            width: 100%;
+            padding: 12px;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .ad-manage-btn:hover {
+            border-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+        
+        /* Modal de Gerenciamento de Anúncios */
+        .ad-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .ad-modal.active {
+            display: flex;
+        }
+        
+        .ad-modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .ad-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .ad-modal-header h3 {
+            color: var(--primary-color);
+            font-size: 22px;
+        }
+        
+        .ad-modal-close {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+        
+        .ad-modal-close:active {
+            transform: scale(0.9);
+        }
+        
+        .ad-form-group {
+            margin-bottom: 20px;
+        }
+        
+        .ad-form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+        
+        .ad-form-group input,
+        .ad-form-group textarea,
+        .ad-form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+        
+        .ad-form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .ad-form-group input:focus,
+        .ad-form-group textarea:focus,
+        .ad-form-group select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+        }
+        
+        .ad-preview {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .ad-preview h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .ad-color-picker {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .color-option {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px white, 0 0 0 4px var(--primary-color);
+        }
+        
+        .ad-save-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .ad-save-btn:active {
+            transform: scale(0.98);
+        }
+        
+        /* Sistema de Login */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            max-width: 450px;
+            width: 100%;
+            overflow: hidden;
+            animation: loginSlideIn 0.5s ease-out;
+        }
+        
+        @keyframes loginSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .login-emoji {
+            font-size: 64px;
+            display: block;
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .login-header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .login-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .login-content {
+            padding: 35px 30px;
+        }
+        
+        .login-form .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .login-form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+            font-size: 15px;
+        }
+        
+        .login-form input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+            text-align: center;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+        
+        .login-form input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+        
+        .login-error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .login-info {
+            background: #f0f9ff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 25px;
+            text-align: center;
+        }
+        
+        .login-info p {
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+        
+        .login-info code {
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+        
+        .login-footer {
+            background: var(--bg-light);
+            padding: 20px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        
+        .app-container {
+            min-height: 100vh;
+        }
+        
+        /* Botão Trocar Senha no Header */
+        .change-password-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .change-password-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+        
+        .change-password-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Alerta de Senha Provisória */
+        .provisional-password-alert {
+            position: absolute;
+            top: 55px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            animation: blink 2s infinite;
+            border: 2px solid #f59e0b;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        @media (max-width: 768px) {
+            .provisional-password-alert {
+                font-size: 9px;
+                padding: 6px 10px;
+                top: 50px;
+            }
+        }
+        
+        /* Modal Trocar Senha */
+        .password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .password-modal.active {
+            display: flex;
+        }
+        
+        .password-modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        .password-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .password-modal-header h3 {
+            color: var(--primary-color);
+            font-size: 22px;
+        }
+        
+        .password-strength {
+            margin: 15px 0;
+        }
+        
+        .strength-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .strength-fill {
+            height: 100%;
+            transition: all 0.3s;
+            width: 0%;
+        }
+        
+        .strength-fill.weak {
+            width: 33%;
+            background: #ef4444;
+        }
+        
+        .strength-fill.medium {
+            width: 66%;
+            background: #f59e0b;
+        }
+        
+        .strength-fill.strong {
+            width: 100%;
+            background: #10b981;
+        }
+        
+        .strength-text {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .strength-text.weak {
+            color: #ef4444;
+        }
+        
+        .strength-text.medium {
+            color: #f59e0b;
+        }
+        
+        .strength-text.strong {
+            color: #10b981;
+        }
+        
+        .password-info {
+            background: #f0f9ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .password-info p {
+            font-size: 13px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .password-info ul {
+            margin-left: 20px;
+            font-size: 13px;
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
     </style>
 </head>
 <body>
+    <!-- Tela de Login -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-container">
+            <div class="login-header">
+                <span class="login-emoji">🔐</span>
+                <h1>Compara PY-BR PRO</h1>
+                <p>Sistema de Comparação de Preços</p>
+            </div>
+            
+            <div class="login-content">
+                <div class="login-form">
+                    <div class="form-group">
+                        <label for="loginPassword">🔑 Senha de Acesso:</label>
+                        <input 
+                            type="password" 
+                            id="loginPassword" 
+                            placeholder="Digite a senha"
+                            maxlength="20"
+                            autocomplete="off"
+                        >
+                    </div>
+                    
+                    <button class="btn" id="loginBtn" onclick="doLogin()">🚀 Entrar</button>
+                    
+                    <div class="login-error" id="loginError" style="display: none;">
+                        ❌ Senha incorreta! Tente novamente.
+                    </div>
+                    
+                    <div class="login-info">
+                        <p>🔐 <strong>Senha Provisória</strong></p>
+                        <p style="font-size: 13px; line-height: 1.6;">
+                            Se este é seu primeiro acesso, utilize a <strong>senha provisória</strong> 
+                            fornecida pelo administrador do sistema.
+                        </p>
+                        <p style="margin-top: 12px; font-size: 13px; color: #dc2626; font-weight: 600;">
+                            ⚠️ Após o primeiro login, você <strong>DEVE</strong> alterar sua senha 
+                            imediatamente para garantir a segurança.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="login-footer">
+                <p>🛡️ Acesso seguro e protegido</p>
+                <p style="font-size: 11px; margin-top: 5px;">v5.0 FINAL</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- App Principal (oculto até login) -->
+    <div class="app-container" id="appContainer" style="display: none;">
     <div class="container">
         <div class="header">
             <span class="version-badge">v5.0 FINAL</span>
+            <button class="change-password-btn" onclick="openChangePassword()" title="Trocar Senha">🔐</button>
+            <div class="provisional-password-alert" id="provisionalAlert" style="display: none;">
+                <span>⚠️ SENHA PROVISÓRIA ATIVA</span>
+            </div>
             <span class="emoji">🛒</span>
             <h1>Compara PY-BR PRO</h1>
             <p>OCR • QR Code • Código de Barras • RTU</p>
@@ -752,6 +1402,32 @@
                 
                 <button class="btn" id="compareBtn">🔍 Comparar Agora</button>
                 
+                <!-- Espaço para Marketing e Propaganda -->
+                <div class="advertising-section">
+                    <div class="ad-label">📢 Publicidade</div>
+                    <div id="adBanner1" class="ad-banner" onclick="handleAdClick(1)">
+                        <div class="ad-content">
+                            <div class="ad-icon">🏪</div>
+                            <div class="ad-text">
+                                <div class="ad-title">Anuncie Aqui!</div>
+                                <div class="ad-subtitle">Seu negócio em destaque</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="adBanner2" class="ad-banner ad-banner-secondary" onclick="handleAdClick(2)">
+                        <div class="ad-content">
+                            <div class="ad-icon">💼</div>
+                            <div class="ad-text">
+                                <div class="ad-title">Espaço Publicitário</div>
+                                <div class="ad-subtitle">Alcance milhares de compradores</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="ad-manage-btn" onclick="openAdManager()">⚙️ Gerenciar Anúncios</button>
+                </div>
+                
                 <div class="loading" id="loading">
                     <div class="spinner"></div>
                     <p style="color: var(--text-light); font-size: 14px;">Calculando...</p>
@@ -807,6 +1483,136 @@
             </div>
         </div>
     </div>
+    </div>
+    
+    <!-- Modal de Trocar Senha -->
+    <div class="password-modal" id="passwordModal">
+        <div class="password-modal-content">
+            <div class="password-modal-header">
+                <h3>🔐 Trocar Senha</h3>
+                <button class="ad-modal-close" onclick="closeChangePassword()">✕</button>
+            </div>
+            
+            <div class="ad-form-group">
+                <label>🔑 Senha Atual:</label>
+                <input type="password" id="currentPassword" placeholder="Digite a senha atual" maxlength="20">
+            </div>
+            
+            <div class="ad-form-group">
+                <label>🆕 Nova Senha:</label>
+                <input type="password" id="newPassword" placeholder="Digite a nova senha" maxlength="20">
+            </div>
+            
+            <div class="ad-form-group">
+                <label>✅ Confirmar Nova Senha:</label>
+                <input type="password" id="confirmPassword" placeholder="Confirme a nova senha" maxlength="20">
+            </div>
+            
+            <div class="password-strength" id="passwordStrength" style="display: none;">
+                <div class="strength-bar">
+                    <div class="strength-fill" id="strengthFill"></div>
+                </div>
+                <p class="strength-text" id="strengthText"></p>
+            </div>
+            
+            <button class="ad-save-btn" onclick="changePassword()">💾 Alterar Senha</button>
+            
+            <div class="password-info">
+                <p>💡 <strong>Dicas de segurança:</strong></p>
+                <ul>
+                    <li>Use pelo menos 6 caracteres</li>
+                    <li>Combine números e letras</li>
+                    <li>Não compartilhe sua senha</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Gerenciamento de Anúncios -->
+    <div class="ad-modal" id="adModal">
+        <div class="ad-modal-content">
+            <div class="ad-modal-header">
+                <h3>⚙️ Gerenciar Anúncios</h3>
+                <button class="ad-modal-close" onclick="closeAdManager()">✕</button>
+            </div>
+            
+            <div class="ad-form-group">
+                <label>Selecione o Banner:</label>
+                <select id="adBannerSelect" onchange="loadAdData()">
+                    <option value="1">Banner 1 (Principal)</option>
+                    <option value="2">Banner 2 (Secundário)</option>
+                </select>
+            </div>
+            
+            <div class="ad-form-group">
+                <label>Título do Anúncio:</label>
+                <input type="text" id="adTitle" placeholder="Ex: Casa de Câmbio Dollar" maxlength="30">
+            </div>
+            
+            <div class="ad-form-group">
+                <label>Subtítulo:</label>
+                <input type="text" id="adSubtitle" placeholder="Ex: Melhores taxas da região" maxlength="50">
+            </div>
+            
+            <div class="ad-form-group">
+                <label>Link do Anúncio (URL):</label>
+                <input type="url" id="adLink" placeholder="https://seusite.com">
+            </div>
+            
+            <div class="ad-form-group">
+                <label>Telefone (WhatsApp):</label>
+                <input type="tel" id="adPhone" placeholder="Ex: 5545999999999">
+            </div>
+            
+            <div class="ad-form-group">
+                <label>Ícone do Anúncio:</label>
+                <select id="adIcon">
+                    <option value="🏪">🏪 Loja</option>
+                    <option value="💱">💱 Câmbio</option>
+                    <option value="🏢">🏢 Empresa</option>
+                    <option value="🛒">🛒 Supermercado</option>
+                    <option value="🏨">🏨 Hotel</option>
+                    <option value="🍔">🍔 Restaurante</option>
+                    <option value="⛽">⛽ Posto</option>
+                    <option value="🚗">🚗 Transporte</option>
+                    <option value="📱">📱 Eletrônicos</option>
+                    <option value="👕">👕 Roupas</option>
+                    <option value="💄">💄 Cosméticos</option>
+                    <option value="🎮">🎮 Games</option>
+                    <option value="📚">📚 Livraria</option>
+                    <option value="💊">💊 Farmácia</option>
+                    <option value="🏋️">🏋️ Academia</option>
+                </select>
+            </div>
+            
+            <div class="ad-form-group">
+                <label>Cor do Banner:</label>
+                <div class="ad-color-picker">
+                    <div class="color-option selected" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);" data-color="yellow" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);" data-color="blue" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);" data-color="green" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);" data-color="pink" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);" data-color="purple" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);" data-color="red" onclick="selectColor(this)"></div>
+                </div>
+            </div>
+            
+            <div class="ad-preview">
+                <h4>👁️ Prévia do Anúncio:</h4>
+                <div class="ad-banner" id="adPreview" style="margin: 0;">
+                    <div class="ad-content">
+                        <div class="ad-icon" id="previewIcon">🏪</div>
+                        <div class="ad-text">
+                            <div class="ad-title" id="previewTitle">Título do Anúncio</div>
+                            <div class="ad-subtitle" id="previewSubtitle">Subtítulo do anúncio</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="ad-save-btn" onclick="saveAd()">💾 Salvar Anúncio</button>
+        </div>
+    </div>
 
     <script>
         const manifestData = {
@@ -832,6 +1638,222 @@
                 navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw], {type: 'application/javascript'})));
             });
         }
+
+        // ============================================
+        // SISTEMA DE LOGIN E AUTENTICAÇÃO
+        // ============================================
+        
+        const DEFAULT_PASSWORD = '15252724';
+        
+        // Verificar se já está logado
+        window.addEventListener('load', () => {
+            const isLoggedIn = sessionStorage.getItem('comparapy_logged_in');
+            if (isLoggedIn === 'true') {
+                showApp();
+            }
+        });
+        
+        // Fazer login
+        function doLogin() {
+            const password = document.getElementById('loginPassword').value;
+            const storedPassword = localStorage.getItem('comparapy_password') || DEFAULT_PASSWORD;
+            
+            if (password === storedPassword) {
+                sessionStorage.setItem('comparapy_logged_in', 'true');
+                document.getElementById('loginError').style.display = 'none';
+                showApp();
+                
+                // Limpar campo de senha
+                document.getElementById('loginPassword').value = '';
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginPassword').focus();
+                
+                // Vibrar em caso de erro
+                if ('vibrate' in navigator) {
+                    navigator.vibrate([100, 50, 100]);
+                }
+            }
+        }
+        
+        // Mostrar app
+        function showApp() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+            
+            // Verificar se é primeiro acesso com senha padrão
+            const storedPassword = localStorage.getItem('comparapy_password') || DEFAULT_PASSWORD;
+            const firstLoginDone = localStorage.getItem('comparapy_first_login_done');
+            
+            // Mostrar alerta visual se senha provisória
+            if (storedPassword === DEFAULT_PASSWORD) {
+                document.getElementById('provisionalAlert').style.display = 'block';
+            } else {
+                document.getElementById('provisionalAlert').style.display = 'none';
+            }
+            
+            if (storedPassword === DEFAULT_PASSWORD && !firstLoginDone) {
+                // Mostrar alerta para trocar senha
+                setTimeout(() => {
+                    if (confirm('🔐 IMPORTANTE: Senha Provisória Detectada!\n\n' +
+                        'Você está usando a senha padrão provisória do sistema.\n\n' +
+                        'Por motivos de SEGURANÇA, é OBRIGATÓRIO trocar sua senha agora.\n\n' +
+                        'Deseja alterar sua senha agora?')) {
+                        openChangePassword();
+                        localStorage.setItem('comparapy_first_login_done', 'true');
+                    } else {
+                        alert('⚠️ ATENÇÃO!\n\nVocê optou por não trocar a senha agora.\n\n' +
+                            'LEMBRE-SE: Esta é uma senha PROVISÓRIA e deve ser alterada o quanto antes.\n\n' +
+                            'Use o botão 🔐 no canto superior esquerdo para trocar sua senha.');
+                        localStorage.setItem('comparapy_first_login_done', 'true');
+                    }
+                }, 500);
+            }
+            
+            // Carregar anúncios
+            const ad1 = JSON.parse(localStorage.getItem('ad_banner_1'));
+            if (ad1) updateBannerDisplay('1', ad1);
+            
+            const ad2 = JSON.parse(localStorage.getItem('ad_banner_2'));
+            if (ad2) updateBannerDisplay('2', ad2);
+        }
+        
+        // Enter para fazer login
+        document.getElementById('loginPassword').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                doLogin();
+            }
+        });
+        
+        // ============================================
+        // TROCAR SENHA
+        // ============================================
+        
+        function openChangePassword() {
+            document.getElementById('passwordModal').classList.add('active');
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            document.getElementById('passwordStrength').style.display = 'none';
+        }
+        
+        function closeChangePassword() {
+            document.getElementById('passwordModal').classList.remove('active');
+        }
+        
+        // Verificar força da senha
+        document.getElementById('newPassword').addEventListener('input', (e) => {
+            const password = e.target.value;
+            const strengthDiv = document.getElementById('passwordStrength');
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthText = document.getElementById('strengthText');
+            
+            if (password.length === 0) {
+                strengthDiv.style.display = 'none';
+                return;
+            }
+            
+            strengthDiv.style.display = 'block';
+            
+            let strength = 0;
+            if (password.length >= 6) strength++;
+            if (password.length >= 8) strength++;
+            if (/[0-9]/.test(password) && /[a-zA-Z]/.test(password)) strength++;
+            
+            strengthFill.className = 'strength-fill';
+            strengthText.className = 'strength-text';
+            
+            if (strength <= 1) {
+                strengthFill.classList.add('weak');
+                strengthText.classList.add('weak');
+                strengthText.textContent = '⚠️ Senha fraca - Use mais caracteres';
+            } else if (strength === 2) {
+                strengthFill.classList.add('medium');
+                strengthText.classList.add('medium');
+                strengthText.textContent = '⚡ Senha média - Pode melhorar';
+            } else {
+                strengthFill.classList.add('strong');
+                strengthText.classList.add('strong');
+                strengthText.textContent = '✅ Senha forte - Ótima escolha!';
+            }
+        });
+        
+        function changePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            const storedPassword = localStorage.getItem('comparapy_password') || DEFAULT_PASSWORD;
+            
+            // Validações
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                alert('⚠️ Preencha todos os campos!');
+                return;
+            }
+            
+            if (currentPassword !== storedPassword) {
+                alert('❌ Senha atual incorreta!');
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('currentPassword').focus();
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                alert('⚠️ A nova senha deve ter pelo menos 6 caracteres!');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('❌ As senhas não coincidem!');
+                document.getElementById('confirmPassword').value = '';
+                document.getElementById('confirmPassword').focus();
+                return;
+            }
+            
+            if (newPassword === storedPassword) {
+                alert('⚠️ A nova senha deve ser diferente da atual!');
+                return;
+            }
+            
+            // Validação adicional: não permitir senha padrão
+            if (newPassword === DEFAULT_PASSWORD) {
+                alert('❌ Você não pode usar a senha provisória padrão!\n\nEscolha uma senha personalizada e segura.');
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
+                document.getElementById('newPassword').focus();
+                return;
+            }
+            
+            // Salvar nova senha
+            localStorage.setItem('comparapy_password', newPassword);
+            
+            // Marcar que senha foi alterada
+            if (storedPassword === DEFAULT_PASSWORD) {
+                localStorage.setItem('comparapy_password_changed', 'true');
+                // Ocultar alerta de senha provisória
+                document.getElementById('provisionalAlert').style.display = 'none';
+            }
+            
+            alert('✅ Senha alterada com sucesso!\n\n' +
+                '🔐 Sua senha foi atualizada e está segura.\n\n' +
+                '⚠️ IMPORTANTE: Guarde sua nova senha em local seguro!\n\n' +
+                'Você precisará dela no próximo login.');
+            
+            closeChangePassword();
+            
+            // Vibração de sucesso
+            if ('vibrate' in navigator) {
+                navigator.vibrate([50, 100, 50]);
+            }
+        }
+        
+        // Fechar modal ao clicar fora
+        document.getElementById('passwordModal').addEventListener('click', (e) => {
+            if (e.target.id === 'passwordModal') {
+                closeChangePassword();
+            }
+        });
 
         // Elementos DOM
         const fileInputCamera = document.getElementById('fileInputCamera');
@@ -1412,6 +2434,167 @@
                 loadHistory();
             }
         }
+        
+        // ============================================
+        // SISTEMA DE PUBLICIDADE E MARKETING
+        // ============================================
+        
+        let selectedColor = 'yellow';
+        const colorGradients = {
+            yellow: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
+            blue: 'linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)',
+            green: 'linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%)',
+            pink: 'linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%)',
+            purple: 'linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%)',
+            red: 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)'
+        };
+        
+        // Abrir gerenciador de anúncios
+        function openAdManager() {
+            document.getElementById('adModal').classList.add('active');
+            loadAdData();
+        }
+        
+        // Fechar gerenciador
+        function closeAdManager() {
+            document.getElementById('adModal').classList.remove('active');
+        }
+        
+        // Carregar dados do anúncio
+        function loadAdData() {
+            const bannerId = document.getElementById('adBannerSelect').value;
+            const adData = JSON.parse(localStorage.getItem(`ad_banner_${bannerId}`)) || {
+                title: 'Anuncie Aqui!',
+                subtitle: bannerId === '1' ? 'Seu negócio em destaque' : 'Alcance milhares de compradores',
+                icon: bannerId === '1' ? '🏪' : '💼',
+                link: '',
+                phone: '',
+                color: bannerId === '1' ? 'yellow' : 'blue'
+            };
+            
+            document.getElementById('adTitle').value = adData.title;
+            document.getElementById('adSubtitle').value = adData.subtitle;
+            document.getElementById('adIcon').value = adData.icon;
+            document.getElementById('adLink').value = adData.link || '';
+            document.getElementById('adPhone').value = adData.phone || '';
+            
+            selectedColor = adData.color;
+            document.querySelectorAll('.color-option').forEach(opt => {
+                opt.classList.remove('selected');
+                if (opt.dataset.color === selectedColor) {
+                    opt.classList.add('selected');
+                }
+            });
+            
+            updatePreview();
+        }
+        
+        // Atualizar prévia em tempo real
+        document.getElementById('adTitle').addEventListener('input', updatePreview);
+        document.getElementById('adSubtitle').addEventListener('input', updatePreview);
+        document.getElementById('adIcon').addEventListener('change', updatePreview);
+        
+        function updatePreview() {
+            const title = document.getElementById('adTitle').value || 'Título do Anúncio';
+            const subtitle = document.getElementById('adSubtitle').value || 'Subtítulo do anúncio';
+            const icon = document.getElementById('adIcon').value;
+            
+            document.getElementById('previewTitle').textContent = title;
+            document.getElementById('previewSubtitle').textContent = subtitle;
+            document.getElementById('previewIcon').textContent = icon;
+            document.getElementById('adPreview').style.background = colorGradients[selectedColor];
+        }
+        
+        // Selecionar cor
+        function selectColor(element) {
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedColor = element.dataset.color;
+            updatePreview();
+        }
+        
+        // Salvar anúncio
+        function saveAd() {
+            const bannerId = document.getElementById('adBannerSelect').value;
+            const title = document.getElementById('adTitle').value;
+            const subtitle = document.getElementById('adSubtitle').value;
+            const icon = document.getElementById('adIcon').value;
+            const link = document.getElementById('adLink').value;
+            const phone = document.getElementById('adPhone').value;
+            
+            if (!title || !subtitle) {
+                alert('⚠️ Preencha título e subtítulo!');
+                return;
+            }
+            
+            const adData = {
+                title,
+                subtitle,
+                icon,
+                link,
+                phone,
+                color: selectedColor
+            };
+            
+            localStorage.setItem(`ad_banner_${bannerId}`, JSON.stringify(adData));
+            
+            // Atualizar banner na página
+            updateBannerDisplay(bannerId, adData);
+            
+            alert('✅ Anúncio salvo com sucesso!');
+            closeAdManager();
+        }
+        
+        // Atualizar exibição do banner
+        function updateBannerDisplay(bannerId, adData) {
+            const banner = document.getElementById(`adBanner${bannerId}`);
+            const icon = banner.querySelector('.ad-icon');
+            const title = banner.querySelector('.ad-title');
+            const subtitle = banner.querySelector('.ad-subtitle');
+            
+            icon.textContent = adData.icon;
+            title.textContent = adData.title;
+            subtitle.textContent = adData.subtitle;
+            banner.style.background = colorGradients[adData.color];
+            
+            // Salvar dados para clique
+            banner.dataset.link = adData.link;
+            banner.dataset.phone = adData.phone;
+        }
+        
+        // Lidar com clique no anúncio
+        function handleAdClick(bannerId) {
+            const adData = JSON.parse(localStorage.getItem(`ad_banner_${bannerId}`));
+            
+            if (!adData) {
+                openAdManager();
+                document.getElementById('adBannerSelect').value = bannerId.toString();
+                loadAdData();
+                return;
+            }
+            
+            // Registrar clique
+            const clicks = JSON.parse(localStorage.getItem('ad_clicks') || '{}');
+            clicks[bannerId] = (clicks[bannerId] || 0) + 1;
+            localStorage.setItem('ad_clicks', JSON.stringify(clicks));
+            
+            // Ações do clique
+            if (adData.phone) {
+                const msg = encodeURIComponent(`Olá! Vi seu anúncio no Compara PY-BR e gostaria de mais informações.`);
+                window.open(`https://wa.me/${adData.phone}?text=${msg}`, '_blank');
+            } else if (adData.link) {
+                window.open(adData.link, '_blank');
+            } else {
+                alert('📢 Entre em contato com o anunciante!\n\n' + adData.title + '\n' + adData.subtitle);
+            }
+        }
+        
+        // Fechar modal ao clicar fora
+        document.getElementById('adModal').addEventListener('click', (e) => {
+            if (e.target.id === 'adModal') {
+                closeAdManager();
+            }
+        });
     </script>
 </body>
 </html>
