@@ -8,8 +8,8 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Compara PY">
-    <title>Compara PY-BR PRO v5.0 - QR Code + Barcode</title>
+    <meta name="apple-mobile-web-app-title" content="LucroScan">
+    <title>LucroScan - Comparador Inteligente PY-BR</title>
     
     <link rel="icon" type="image/png" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231e40af'/%3E%3Ctext x='50' y='60' font-size='50' fill='white' text-anchor='middle' font-family='Arial'%3E🛒%3C/text%3E%3C/svg%3E">
     <link rel="manifest" id="manifest-placeholder">
@@ -44,23 +44,30 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, var(--secondary-color) 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 10px;
+            padding: 0;
             overflow-x: hidden;
         }
         
         .container {
-            max-width: 500px;
-            margin: 0 auto;
+            max-width: 100%;
+            width: 100%;
+            margin: 0;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 0;
+            box-shadow: none;
             overflow: hidden;
-            animation: slideIn 0.5s ease-out;
+            min-height: 100vh;
         }
         
         @media (min-width: 768px) {
             body { padding: 20px; }
-            .container { max-width: 720px; }
+            .container { 
+                max-width: 720px;
+                margin: 0 auto;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                min-height: auto;
+            }
             .content { padding: 30px !important; }
             .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
             .form-group.full-width { grid-column: 1 / -1; }
@@ -89,25 +96,36 @@
         .header {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
             color: white;
-            padding: 25px 20px;
+            padding: 20px 15px;
             text-align: center;
             position: relative;
         }
         
+        .header-title-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        
         .header h1 {
-            font-size: clamp(18px, 4vw, 24px);
-            margin-bottom: 5px;
+            font-size: clamp(20px, 6vw, 28px);
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
         
         .header .emoji {
-            font-size: clamp(28px, 5vw, 36px);
-            margin-bottom: 5px;
+            font-size: clamp(28px, 8vw, 40px);
             display: block;
         }
         
         .header p {
-            font-size: clamp(11px, 2.5vw, 13px);
-            opacity: 0.9;
+            font-size: clamp(11px, 3vw, 14px);
+            opacity: 0.95;
+            margin: 0;
+            font-weight: 500;
         }
         
         .version-badge {
@@ -122,7 +140,7 @@
         }
         
         .content {
-            padding: 20px;
+            padding: 15px;
         }
         
         .tabs {
@@ -134,7 +152,7 @@
         
         .tab {
             flex: 1;
-            padding: 12px;
+            padding: 10px 8px;
             background: transparent;
             border: none;
             border-bottom: 3px solid transparent;
@@ -142,7 +160,14 @@
             font-weight: 600;
             color: var(--text-light);
             transition: all 0.3s;
-            font-size: 13px;
+            font-size: 12px;
+        }
+        
+        @media (min-width: 768px) {
+            .tab {
+                font-size: 14px;
+                padding: 12px;
+            }
         }
         
         .tab.active {
@@ -160,19 +185,31 @@
         
         .exchange-rates-section {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
         .exchange-rates-section h4 {
             color: #92400e;
-            margin-bottom: 15px;
-            font-size: 16px;
+            margin-bottom: 12px;
+            font-size: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+        
+        @media (min-width: 768px) {
+            .exchange-rates-section {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .exchange-rates-section h4 {
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
         }
         
         .rate-editor {
@@ -288,13 +325,21 @@
         
         .upload-section {
             border: 3px dashed var(--border-color);
-            border-radius: 15px;
-            padding: 25px 20px;
+            border-radius: 12px;
+            padding: 20px 15px;
             text-align: center;
             background: var(--bg-light);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             cursor: pointer;
             transition: all 0.3s;
+        }
+        
+        @media (min-width: 768px) {
+            .upload-section {
+                border-radius: 15px;
+                padding: 25px 20px;
+                margin-bottom: 20px;
+            }
         }
         
         .upload-section.analyzing {
@@ -381,27 +426,50 @@
         }
         
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 15px;
+        }
+        
+        @media (min-width: 768px) {
+            .form-group {
+                margin-bottom: 18px;
+            }
         }
         
         label {
             display: block;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #334155;
-            font-size: 14px;
+            font-size: 13px;
+        }
+        
+        @media (min-width: 768px) {
+            label {
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
         }
         
         input[type="number"], 
         input[type="text"], 
         select {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             border: 2px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 15px;
             transition: all 0.3s;
             background: white;
+        }
+        
+        @media (min-width: 768px) {
+            input[type="number"], 
+            input[type="text"], 
+            select {
+                padding: 14px;
+                border-radius: 12px;
+                font-size: 16px;
+            }
         }
         
         input:focus, select:focus {
@@ -1072,32 +1140,27 @@
         /* Alerta de Senha Provisória */
         .provisional-password-alert {
             position: absolute;
-            top: 55px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 10px;
+            left: 60px;
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
             color: #92400e;
-            padding: 8px 15px;
+            padding: 8px 12px;
             border-radius: 20px;
-            font-size: 11px;
+            font-size: 9px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             animation: blink 2s infinite;
             border: 2px solid #f59e0b;
             box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+            white-space: nowrap;
         }
         
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-        
-        @media (max-width: 768px) {
+        @media (min-width: 768px) {
             .provisional-password-alert {
-                font-size: 9px;
-                padding: 6px 10px;
-                top: 50px;
+                font-size: 10px;
+                padding: 10px 15px;
+                left: 65px;
             }
         }
         
@@ -1223,8 +1286,8 @@
         <div class="login-container">
             <div class="login-header">
                 <span class="login-emoji">🔐</span>
-                <h1>Compara PY-BR PRO</h1>
-                <p>Sistema de Comparação de Preços</p>
+                <h1>LucroScan</h1>
+                <p>Comparador Inteligente de Preços</p>
             </div>
             
             <div class="login-content">
@@ -1274,11 +1337,13 @@
             <span class="version-badge">v5.0 FINAL</span>
             <button class="change-password-btn" onclick="openChangePassword()" title="Trocar Senha">🔐</button>
             <div class="provisional-password-alert" id="provisionalAlert" style="display: none;">
-                <span>⚠️ SENHA PROVISÓRIA ATIVA</span>
+                ⚠️ SENHA PROVISÓRIA
             </div>
-            <span class="emoji">🛒</span>
-            <h1>Compara PY-BR PRO</h1>
-            <p>OCR • QR Code • Código de Barras • RTU</p>
+            <div class="header-title-container">
+                <span class="emoji">🛒</span>
+                <h1>LucroScan</h1>
+            </div>
+            <p>Comparador Inteligente de Preços PY-BR</p>
         </div>
         
         <div class="content left-column">
@@ -1616,8 +1681,8 @@
 
     <script>
         const manifestData = {
-            name: "Compara PY-BR PRO v5.0",
-            short_name: "ComparaPY",
+            name: "LucroScan",
+            short_name: "LucroScan",
             start_url: window.location.href,
             display: "standalone",
             background_color: "#ffffff",
@@ -2580,7 +2645,7 @@
             
             // Ações do clique
             if (adData.phone) {
-                const msg = encodeURIComponent(`Olá! Vi seu anúncio no Compara PY-BR e gostaria de mais informações.`);
+                const msg = encodeURIComponent(`Olá! Vi seu anúncio no LucroScan e gostaria de mais informações.`);
                 window.open(`https://wa.me/${adData.phone}?text=${msg}`, '_blank');
             } else if (adData.link) {
                 window.open(adData.link, '_blank');
